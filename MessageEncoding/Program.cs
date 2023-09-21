@@ -10,7 +10,7 @@ internal static class Program
         ICodec codec = new MessageCodec();
         
         var message = new Message
-        {
+        { 
             Headers = new Dictionary<string, string>
             {
                 { "Header1", "Value1" },
@@ -19,14 +19,21 @@ internal static class Program
             Payload = "This is the message payload."u8.ToArray()
         };
         
+        try
+        {
+            //Invoke encoding
+            byte[] encodedData = codec.Encode(message);
+            
+            //Invoke decoding
+            Message decodedMessage = codec.Decode(encodedData);
 
-        //Invoke encoding
-        byte[] encodedData = codec.Encode(message);
-
-        //Invoke decoding
-        Message decodedMessage = codec.Decode(encodedData);
-
-        //Display result
-        Display.Print(encodedData, decodedMessage);
+            //Display result
+            Display.Print(encodedData, decodedMessage);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
     }
 }
