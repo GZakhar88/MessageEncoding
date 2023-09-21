@@ -1,3 +1,32 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using MessageEncoding.Utils;
 
-Console.WriteLine("Hello, World!");
+namespace MessageEncoding;
+
+internal static class Program
+{
+    private static void Main(string[] args)
+    {
+        //Example usage
+        ICodec codec = new MessageCodec();
+        
+        var message = new Message
+        {
+            Headers = new Dictionary<string, string>
+            {
+                { "Header1", "Value1" },
+                { "Header2", "Value2" }
+            },
+            Payload = "This is the message payload."u8.ToArray()
+        };
+        
+
+        //Invoke encoding
+        byte[] encodedData = codec.Encode(message);
+
+        //Invoke decoding
+        Message decodedMessage = codec.Decode(encodedData);
+
+        //Display result
+        Display.Print(encodedData, decodedMessage);
+    }
+}
